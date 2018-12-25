@@ -1,6 +1,6 @@
 FROM arm32v7/python:3.7.1-slim
 
-COPY requirements.txt /tmp/
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /code
