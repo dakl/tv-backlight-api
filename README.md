@@ -1,5 +1,7 @@
 # Development
 
+[![Build Status](https://travis-ci.org/dakl/tv-backlight-api.svg?branch=master)](https://travis-ci.org/dakl/tv-backlight-api)
+
 ## Run locally
 
 ~~~bash
@@ -19,25 +21,8 @@ docker push dakl/tv-backlight-api
 
 ~~~bash
 docker run \
--e RELAY_HUB_DEVICE_ID=(echo $RELAY_HUB_DEVICE_ID) \
--e LEGO_HOUSE_DEVICE_ID=(echo $LEGO_HOUSE_DEVICE_ID) \
+-e TV_BACKLIGHT_DEVICE_ID=(echo $TV_BACKLIGHT_DEVICE_ID) \
 -e PARTICLE_ACCESS_TOKEN=(echo $PARTICLE_ACCESS_TOKEN) \
 -p 8000:8000 \
 dakl/tv-backlight-api
 ~~~
-
-## Run in swarm
-
-~~~bash
-docker service create \
---replicas 1 \
---name tv-backlight-api \
--e RELAY_HUB_DEVICE_ID=(echo $RELAY_HUB_DEVICE_ID) \
--e LEGO_HOUSE_DEVICE_ID=(echo $LEGO_HOUSE_DEVICE_ID) \
--e PARTICLE_ACCESS_TOKEN=(echo $PARTICLE_ACCESS_TOKEN) \
--p 8000:8000 \
-dakl/tv-backlight-api
-~~~
-
-# CI
-Should build and push image. TBD.
