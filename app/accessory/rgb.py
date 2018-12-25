@@ -27,7 +27,7 @@ class RGBLight(Accessory):
             payload['arg'] = value
         return payload
 
-    def _set(self, parameter, value):
+    def _set_parameter(self, parameter, value):
         payload = self._get_payload(self.access_token, value=value)
         url = self._get_url(parameter)
         response = post(url, data=payload, headers=self.headers)
@@ -35,15 +35,15 @@ class RGBLight(Accessory):
 
     def set_status(self, value):
         """1 means on, 0 means off"""
-        return self._set('state', value)
+        return self._set_parameter('state', value)
 
     def set_brightness(self, value: int) -> None:
         """ Brightness is expected to come in as an int in the range 0-100."""
-        return self._set('brightness', value)
+        return self._set_parameter('brightness', value)
 
     def set_hue(self, value: int) -> None:
         """Hue"""
-        return self._set('hue', value)
+        return self._set_parameter('hue', value)
 
     def get_status(self):
         return 0
