@@ -9,7 +9,7 @@ from app.setup import app
 logger = logging.getLogger(__name__)
 
 HEADERS = {"Content-type": "application/x-www-form-urlencoded"}
-ALLOWED_ACTIONS = {'on': 'HIGH', 'off': 'LOW'}
+STATE_MAP = {'on': 1, 'off': 0}
 
 
 @app.route('/')
@@ -31,7 +31,8 @@ def list_accessories():
 def set_status(accessory_id):
     if accessory_id not in ACCESSORIES:
         abort(404)
-    state = int(request.json.get('value'))
+    raw_state = request.json.get('value')
+    state = STATE_MAP.get(raw_state)
     accessory = ACCESSORIES.get(accessory_id)
     new_state = accessory.set_status(state)
     return jsonify({'id': accessory_id, 'new_state': new_state})
