@@ -1,12 +1,11 @@
-import logging
-
+import structlog
 from colour import Color
 from flask import abort, jsonify, request
 
 from app.accessories import ACCESSORIES
 from app.setup import app
 
-logger = logging.getLogger(__name__)
+logger = structlog.getLogger(__name__)
 
 HEADERS = {"Content-type": "application/x-www-form-urlencoded"}
 STATE_MAP = {'on': 1, 'off': 0}
@@ -81,7 +80,8 @@ def set_color(accessory_id):
         abort(400)
 
     accessory = ACCESSORIES.get(accessory_id)
-    accessory.set_color(int(255*color.red), int(255*color.green), int(255*color.blue))
+    accessory.set_color(
+        int(255 * color.red), int(255 * color.green), int(255 * color.blue))
     return jsonify({'id': accessory_id, 'new_color': f'#{value}'})
 
 
@@ -94,7 +94,7 @@ def get_color(accessory_id):
 
     r, g, b = accessory.get_color()
     try:
-        color = Color(r=r/255, g=g/255, b=b/255)
+        color = Color(r=r / 255, g=g / 255, b=b / 255)
     except Exception:
         abort(400)
 

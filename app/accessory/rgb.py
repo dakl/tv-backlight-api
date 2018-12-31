@@ -1,6 +1,6 @@
-import structlog
 from typing import Tuple
 
+import structlog
 from requests import post
 
 from app import config

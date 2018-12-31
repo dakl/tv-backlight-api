@@ -1,9 +1,9 @@
-import logging
+import structlog
 
-from app.views import *  # noqa
 from app.setup import app
+from app.views import *  # noqa
 
-logger = logging.getLogger(__name__)
+logger = structlog.getLogger(__name__)
 
 if __name__ == '__main__':
     logger.info("Starting tv-backlight-api")
