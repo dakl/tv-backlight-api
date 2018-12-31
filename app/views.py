@@ -47,7 +47,8 @@ def get_status(accessory_id):
     return str(accessory.get_status())
 
 
-@app.route('/api/v1/accessories/<int:accessory_id>/brightness', methods=['POST'])
+@app.route(
+    '/api/v1/accessories/<int:accessory_id>/brightness', methods=['POST'])
 def set_brightness(accessory_id):
     if accessory_id not in ACCESSORIES:
         abort(404)
@@ -59,7 +60,8 @@ def set_brightness(accessory_id):
     return jsonify({'id': accessory_id, 'new_brightness': new_value})
 
 
-@app.route('/api/v1/accessories/<int:accessory_id>/brightness', methods=['GET'])
+@app.route(
+    '/api/v1/accessories/<int:accessory_id>/brightness', methods=['GET'])
 def get_brightness(accessory_id):
     if accessory_id not in ACCESSORIES:
         abort(404)
@@ -78,9 +80,8 @@ def set_color(accessory_id):
     except Exception:
         abort(400)
 
-    hue = int(360*color.hue)
     accessory = ACCESSORIES.get(accessory_id)
-    accessory.set_hue(hue)
+    accessory.set_color(int(255*color.red), int(255*color.green), int(255*color.blue))
     return jsonify({'id': accessory_id, 'new_color': f'#{value}'})
 
 
@@ -91,9 +92,9 @@ def get_color(accessory_id):
 
     accessory = ACCESSORIES.get(accessory_id)
 
-    value = accessory.get_hue()
+    r, g, b = accessory.get_color()
     try:
-        color = Color(hue=value/360, saturation=1, luminance=0.5)
+        color = Color(r=r/255, g=g/255, b=b/255)
     except Exception:
         abort(400)
 

@@ -1,8 +1,13 @@
+import structlog
+from typing import Tuple
+
 from requests import post
 
 from app import config
 
 from .base import Accessory
+
+logger = structlog.getLogger(__name__)
 
 
 class RGBLight(Accessory):
@@ -23,13 +28,14 @@ class RGBLight(Accessory):
 
     def _get_payload(self, access_token, value=None):
         payload = {'access_token': access_token}
-        if value:
-            payload['arg'] = value
+        if value is not None:
+            payload['args'] = value
         return payload
 
     def _set_parameter(self, parameter, value):
         payload = self._get_payload(self.access_token, value=value)
         url = self._get_url(parameter)
+        logger.info("Sending args", args=payload.get('args'))
         response = post(url, data=payload, headers=self.headers)
         return response.json().get('return_value')
 
@@ -41,9 +47,8 @@ class RGBLight(Accessory):
         """ Brightness is expected to come in as an int in the range 0-100."""
         return self._set_parameter('brightness', value)
 
-    def set_hue(self, value: int) -> None:
-        """Hue"""
-        return self._set_parameter('hue', value)
+    def set_color(self, r: int, g: int, b: int):
+        return self._set_parameter('color', f'{r},{g},{b}')
 
     def get_status(self):
         return 0
@@ -54,5 +59,5 @@ class RGBLight(Accessory):
         # response = get(url, payload, headers=self.headers)
         return 0
 
-    def get_hue(self) -> float:
-        return 120
+    def get_color(self) -> Tuple[int, int, int]:
+        return (0, 0, 0)

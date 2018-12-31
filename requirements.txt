@@ -2,3 +2,4 @@ colour
 flask
 gunicorn
 requests
+structlog
